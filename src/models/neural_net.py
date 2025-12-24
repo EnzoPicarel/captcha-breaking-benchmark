@@ -56,6 +56,9 @@ class NeuralNetwork:
             self.params['W2'] -= self.lr * dW2
             self.params['b2'] -= self.lr * db2
 
+        # clear progress line when done
+        print(" " * 50, end='\r')
+
     def predict(self, X):
         Z1 = np.dot(X, self.params['W1']) + self.params['b1']
         A1 = self._sigmoid(Z1)
