@@ -16,13 +16,16 @@ class LogisticRegression:
         X_b = np.c_[np.ones((m, 1)), X]
         self.theta = np.zeros((n + 1, 1))
         
-        for _ in range(self.n_iters):
+        for i in range(self.n_iters):
+            if i % 1000 == 0:
+                print(f"      iteration {i}/{self.n_iters}", end='\r')
             z = np.dot(X_b, self.theta)
             h = self._sigmoid(z)
             
             # gradient ascent
             gradient = np.dot(X_b.T, (y - h)) 
             self.theta += self.lr * (gradient / m)
+        print(f"      iteration {self.n_iters}/{self.n_iters}", end='\r')
 
     def predict(self, X):
         m = X.shape[0]

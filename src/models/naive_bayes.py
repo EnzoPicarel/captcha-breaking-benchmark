@@ -31,7 +31,10 @@ class GaussianNaiveBayes:
 
     def predict(self, X):
         y_pred = []
-        for x in X:
+        total = len(X)
+        for i, x in enumerate(X):
+            if i % 5000 == 0:
+                print(f"      predicting {i}/{total}", end='\r')
             posteriors = []
             for c in self.classes:
                 prior = np.log(self.priors[c])
@@ -42,4 +45,5 @@ class GaussianNaiveBayes:
             
             # map estimate
             y_pred.append(self.classes[np.argmax(posteriors)])
+        print(f"      predicting {total}/{total}", end='\r')
         return np.array(y_pred).reshape(-1, 1)

@@ -18,6 +18,10 @@ class NeuralNetwork:
         m = X.shape[0]
         np.random.seed(42)
         
+        # ensure y is column vector
+        if y.ndim == 1:
+            y = y.reshape(-1, 1)
+        
         # he init
         scale = np.sqrt(2 / self.input_size)
         self.params = {
@@ -27,7 +31,10 @@ class NeuralNetwork:
             'b2': np.zeros((1, 1))
         }
 
-        for _ in range(self.epochs):
+        for epoch in range(self.epochs):
+            # progress feedback
+            if epoch % 100 == 0:
+                print(f"      epoch {epoch}/{self.epochs}", end='\r')
             # forward
             Z1 = np.dot(X, self.params['W1']) + self.params['b1']
             A1 = self._sigmoid(Z1)
@@ -54,4 +61,4 @@ class NeuralNetwork:
         A1 = self._sigmoid(Z1)
         Z2 = np.dot(A1, self.params['W2']) + self.params['b2']
         A2 = self._sigmoid(Z2)
-        return (A2 >= 0.5).astype(int)
+        return (A2 >= 0.5).astype(int).reshape(-1, 1)
